@@ -52,7 +52,7 @@ class App {
       new Set(userNumber).size !== 3 || // 중복된 숫자 여부 확인
       !pattern.test(userNumber) // 숫자만 있는지 확인
     )
-      throw new Error("`[ERROR]");
+      throw new Error("[ERROR] 잘못된 형식의 숫자입니다.");
   }
 
   //📌 정답과 유저번호 비교 기능 (볼, 스트라이크 출력)
