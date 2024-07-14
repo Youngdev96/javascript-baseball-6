@@ -23,8 +23,8 @@ class App {
     console.log(answer); // 🔴 정답 미리 확인용
     return answer.join("");
   }
-   //📌 게임 실행 기능
-   async runGame() {
+  //📌 게임 실행 기능
+  async runGame() {
     const userInputNumber = await Console.readLineAsync(
       "숫자를 입력해주세요 : "
     );
@@ -43,7 +43,7 @@ class App {
     }
   }
 
-    //📌 유저번호 효율성 체크 기능 (에러처리)
+  //📌 유저번호 효율성 체크 기능 (에러처리)
   // 체크 할 부분 : 유저가 3글자만 입력을 했는지 & 숫자만 입력했는지 & 동일한 숫자가 없는지 확인
   validateUserNumber(userNumber) {
     const pattern = /^[1-9]+$/;
@@ -83,6 +83,21 @@ class App {
     return resultArr.length === 0 ? "낫싱" : resultArr.join(" ");
   }
 
+  //📌 게임 재시작 여부 확인 기능
+  async checkRestartGame() {
+    let input;
+    input = await Console.readLineAsync(
+      "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요."
+    );
+
+    input === "1" ? this.restart() : Console.print("게임을 종료합니다");
+  }
+
+  //📌 게임 재시작 기능
+  async restart() {
+    this.answer = this.generateAnswer();
+    await this.runGame();
+  }
 }
 
 const app = new App();
