@@ -42,6 +42,18 @@ class App {
       this.runGame();
     }
   }
+
+    //📌 유저번호 효율성 체크 기능 (에러처리)
+  // 체크 할 부분 : 유저가 3글자만 입력을 했는지 & 숫자만 입력했는지 & 동일한 숫자가 없는지 확인
+  validateUserNumber(userNumber) {
+    const pattern = /^[1-9]+$/;
+    if (
+      userNumber.length !== 3 || // 3글자 확인
+      new Set(userNumber).size !== 3 || // 중복된 숫자 여부 확인
+      !pattern.test(userNumber) // 숫자만 있는지 확인
+    )
+      throw new Error("`[ERROR]");
+  }
 }
 
 const app = new App();
