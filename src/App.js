@@ -1,5 +1,6 @@
 import { Console, Random } from "@woowacourse/mission-utils";
-import MESSAGES from "./Constants/Messages.js";
+import MESSAGES from "./constants/Messages.js";
+import CONDITIONS from "./constants/conditions.js";
 
 class App {
   constructor() {
@@ -15,7 +16,7 @@ class App {
   //📌 정답 생성 기능
   generateAnswer() {
     let answer = [];
-    while (answer.length < 3) {
+    while (answer.length < CONDITIONS.NUMBER_LENGTH) {
       const number = Random.pickNumberInRange(1, 9);
       if (!answer.includes(number)) {
         answer.push(number);
@@ -32,7 +33,7 @@ class App {
 
     const { ball, strike } = this.compareAnswer(userInputNumber);
 
-    if (strike === 3) {
+    if (strike === CONDITIONS.NUMBER_LENGTH) {
       Console.print(`${strike}` + MESSAGES.STRIKE_MESSAGE);
       Console.print(MESSAGES.SUCCESS_MESSAGE);
       await this.checkRestartGame();
@@ -45,11 +46,10 @@ class App {
   //📌 유저번호 효율성 체크 기능 (에러처리)
   // 체크 할 부분 : 유저가 3글자만 입력을 했는지 & 숫자만 입력했는지 & 동일한 숫자가 없는지 확인
   validateUserNumber(userNumber) {
-    const pattern = /^[1-9]+$/;
     if (
-      userNumber.length !== 3 || // 3글자 확인
-      new Set(userNumber).size !== 3 || // 중복된 숫자 여부 확인
-      !pattern.test(userNumber) // 숫자만 있는지 확인
+      userNumber.length !== CONDITIONS.NUMBER_LENGTH || // 3글자 확인
+      new Set(userNumber).size !== CONDITIONS.NUMBER_LENGTH || // 중복된 숫자 여부 확인
+      !CONDITIONS.NUMBER_REGEX.test(userNumber) // 숫자만 있는지 확인
     )
       throw new Error(MESSAGES.ERROR_MESSAGE);
   }
@@ -58,7 +58,7 @@ class App {
   compareAnswer(userNumber) {
     let ball = 0;
     let strike = 0;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < CONDITIONS.NUMBER_LENGTH; i++) {
       if (userNumber[i] === this.answer[i]) {
         strike++;
       } else if (this.answer.includes(userNumber[i])) {
@@ -89,7 +89,9 @@ class App {
     let input;
     input = await Console.readLineAsync(MESSAGES.RESTART_PROMPT);
 
-    input === "1" ? this.restart() : Console.print(MESSAGES.END_MESSAGE);
+    input === CONDITIONS.RESTART.YES
+      ? this.restart()
+      : Console.print(MESSAGES.END_MESSAGE);
   }
 
   //📌 게임 재시작 기능
