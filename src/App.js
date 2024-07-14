@@ -54,6 +54,35 @@ class App {
     )
       throw new Error("`[ERROR]");
   }
+
+  //📌 정답과 유저번호 비교 기능 (볼, 스트라이크 출력)
+  compareAnswer(userNumber) {
+    let ball = 0;
+    let strike = 0;
+    for (let i = 0; i < 3; i++) {
+      if (userNumber[i] === this.answer[i]) {
+        strike++;
+      } else if (this.answer.includes(userNumber[i])) {
+        ball++;
+      }
+    }
+    //구조분해할당
+    return { ball, strike };
+  }
+
+  //📌 결과메세지 출력 기능
+  printResultMessage({ ball, strike }) {
+    const resultArr = [];
+
+    if (ball > 0) {
+      resultArr.push(`${ball}볼`);
+    }
+    if (strike > 0) {
+      resultArr.push(`${strike}스트라이크`);
+    }
+    return resultArr.length === 0 ? "낫싱" : resultArr.join(" ");
+  }
+
 }
 
 const app = new App();
