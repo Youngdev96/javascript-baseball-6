@@ -1,4 +1,5 @@
 import { Console, Random } from "@woowacourse/mission-utils";
+import MESSAGES from "./Constants/Messages.js";
 
 class App {
   constructor() {
@@ -7,7 +8,7 @@ class App {
 
   //📌 게임 시작 기능
   async play() {
-    Console.print("숫자 야구 게임을 시작합니다.");
+    Console.print(MESSAGES.START_MESSAGE);
     this.answer = this.generateAnswer();
     await this.runGame();
   }
@@ -25,17 +26,15 @@ class App {
   }
   //📌 게임 실행 기능
   async runGame() {
-    const userInputNumber = await Console.readLineAsync(
-      "숫자를 입력해주세요 : "
-    );
+    const userInputNumber = await Console.readLineAsync(MESSAGES.PROMPT_INPUT);
 
     this.validateUserNumber(userInputNumber);
 
     const { ball, strike } = this.compareAnswer(userInputNumber);
 
     if (strike === 3) {
-      Console.print(`${strike}스트라이크`);
-      Console.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+      Console.print(`${strike}` + MESSAGES.STRIKE_MESSAGE);
+      Console.print(MESSAGES.SUCCESS_MESSAGE);
       await this.checkRestartGame();
     } else {
       Console.print(this.printResultMessage({ ball, strike }));
@@ -52,7 +51,7 @@ class App {
       new Set(userNumber).size !== 3 || // 중복된 숫자 여부 확인
       !pattern.test(userNumber) // 숫자만 있는지 확인
     )
-      throw new Error("[ERROR] 잘못된 형식의 숫자입니다.");
+      throw new Error(MESSAGES.ERROR_MESSAGE);
   }
 
   //📌 정답과 유저번호 비교 기능 (볼, 스트라이크 출력)
@@ -75,22 +74,22 @@ class App {
     const resultArr = [];
 
     if (ball > 0) {
-      resultArr.push(`${ball}볼`);
+      resultArr.push(`${ball}` + MESSAGES.BALL_MESSAGE);
     }
     if (strike > 0) {
-      resultArr.push(`${strike}스트라이크`);
+      resultArr.push(`${strike}` + MESSAGES.STRIKE_MESSAGE);
     }
-    return resultArr.length === 0 ? "낫싱" : resultArr.join(" ");
+    return resultArr.length === 0
+      ? MESSAGES.NOTHING_MESSAGE
+      : resultArr.join(" ");
   }
 
   //📌 게임 재시작 여부 확인 기능
   async checkRestartGame() {
     let input;
-    input = await Console.readLineAsync(
-      "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요."
-    );
+    input = await Console.readLineAsync(MESSAGES.RESTART_PROMPT);
 
-    input === "1" ? this.restart() : Console.print("게임을 종료합니다");
+    input === "1" ? this.restart() : Console.print(MESSAGES.END_MESSAGE);
   }
 
   //📌 게임 재시작 기능
