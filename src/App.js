@@ -11,6 +11,18 @@ class App {
     this.answer = this.generateAnswer();
     await this.runGame();
   }
+  //📌 정답 생성 기능
+  generateAnswer() {
+    let answer = [];
+    while (answer.length < 3) {
+      const number = Random.pickNumberInRange(1, 9);
+      if (!answer.includes(number)) {
+        answer.push(number);
+      }
+    }
+    console.log(answer); // 🔴 정답 미리 확인용
+    return answer.join("");
+  }
 }
 
 const app = new App();
