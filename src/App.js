@@ -23,6 +23,25 @@ class App {
     console.log(answer); // 🔴 정답 미리 확인용
     return answer.join("");
   }
+   //📌 게임 실행 기능
+   async runGame() {
+    const userInputNumber = await Console.readLineAsync(
+      "숫자를 입력해주세요 : "
+    );
+
+    this.validateUserNumber(userInputNumber);
+
+    const { ball, strike } = this.compareAnswer(userInputNumber);
+
+    if (strike === 3) {
+      Console.print(`${strike}스트라이크`);
+      Console.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+      await this.checkRestartGame();
+    } else {
+      Console.print(this.printResultMessage({ ball, strike }));
+      this.runGame();
+    }
+  }
 }
 
 const app = new App();
