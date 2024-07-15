@@ -1,4 +1,4 @@
-import MESSAGES from "../constants/messages.js";
+import MESSAGES from "../constants/Messages.js";
 
 const ERROR_VIEW = () => {
   throw new Error(MESSAGES.ERROR_MESSAGE);
