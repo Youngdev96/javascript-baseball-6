@@ -1,6 +1,12 @@
 import { Console, Random } from "@woowacourse/mission-utils";
-import MESSAGES from "./constants/Messages.js";
+
+import MESSAGES from "./constants/messages.js";
 import CONDITIONS from "./constants/conditions.js";
+
+import GAME_START_VIEW from "./views/gameStartView.js";
+import RESTART_VIEW from "./views/restartView.js";
+import INPUT_NUMBER_VIEW from "./views/inputNumberView.js";
+import ERROR_VIEW from "./views/errorView.js";
 
 class App {
   constructor() {
@@ -9,7 +15,7 @@ class App {
 
   //📌 게임 시작 기능
   async play() {
-    Console.print(MESSAGES.START_MESSAGE);
+    GAME_START_VIEW();
     this.answer = this.generateAnswer();
     await this.runGame();
   }
@@ -27,7 +33,7 @@ class App {
   }
   //📌 게임 실행 기능
   async runGame() {
-    const userInputNumber = await Console.readLineAsync(MESSAGES.PROMPT_INPUT);
+    const userInputNumber = await INPUT_NUMBER_VIEW();
 
     this.validateUserNumber(userInputNumber);
 
@@ -51,7 +57,7 @@ class App {
       new Set(userNumber).size !== CONDITIONS.NUMBER_LENGTH || // 중복된 숫자 여부 확인
       !CONDITIONS.NUMBER_REGEX.test(userNumber) // 숫자만 있는지 확인
     )
-      throw new Error(MESSAGES.ERROR_MESSAGE);
+      ERROR_VIEW();
   }
 
   //📌 정답과 유저번호 비교 기능 (볼, 스트라이크 출력)
@@ -87,7 +93,7 @@ class App {
   //📌 게임 재시작 여부 확인 기능
   async checkRestartGame() {
     let input;
-    input = await Console.readLineAsync(MESSAGES.RESTART_PROMPT);
+    input = await RESTART_VIEW();
 
     input === CONDITIONS.RESTART.YES
       ? this.restart()
